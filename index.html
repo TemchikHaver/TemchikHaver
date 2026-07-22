@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Temchik_Haver</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+            will-change: transform;
+        }
+
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite alternate;
+            opacity: 0.15;
+            box-shadow: 0 0 6px rgba(255,255,255,0.2);
+            will-change: transform, opacity;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.08; transform: scale(0.6); }
+            100% { opacity: 1; transform: scale(1.3); }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 32px;
+            padding: 35px 25px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.9);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            border: 3px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 40px rgba(100, 120, 200, 0.15);
+            overflow: hidden;
+            background: #1a1a2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.02);
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(270deg, #8a9bb5, #4a5f7a, #8a9bb5, #4a5f7a);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 8s ease-in-out infinite;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .sub {
+            color: rgba(255,255,255,0.2);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin-bottom: 6px;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+            margin: 18px 0;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 16px 0 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+        }
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn-default {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.05);
+        }
+        .btn-default:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .btn-active {
+            background: rgba(60, 80, 120, 0.35) !important;
+            border-color: rgba(100, 140, 200, 0.25) !important;
+            box-shadow: 0 0 30px rgba(60, 80, 120, 0.1) !important;
+            color: #fff !important;
+        }
+        .btn-story {
+            background: rgba(60, 80, 120, 0.2);
+            border-color: rgba(100, 140, 200, 0.15);
+            color: rgba(255,255,255,0.7);
+        }
+        .btn-story:active {
+            opacity: 0.8;
+            transform: scale(0.97);
+        }
+
+        .story-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, margin 0.3s ease;
+            opacity: 0;
+            margin: 0;
+            will-change: max-height, opacity;
+        }
+        .story-wrapper.open {
+            max-height: 600px;
+            opacity: 1;
+            margin: 12px 0 16px;
+        }
+        .story-text {
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 2;
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.03);
+            white-space: pre-line;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+            transform: translateY(-8px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+        .story-wrapper.open .story-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .footer {
+            margin-top: 16px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .social-page {
+            display: none;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+        }
+        .social-page.active {
+            display: block;
+        }
+        .social-page.closing {
+            animation: slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes slideOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(20px) scale(0.97); }
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.04);
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.35);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            width: 100%;
+            text-align: center;
+        }
+        .back-btn:active {
+            transform: scale(0.97);
+            background: rgba(255,255,255,0.06);
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.6);
+        }
+
+        .social-card {
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: fadeInCard 0.6s ease;
+            will-change: transform, opacity;
+        }
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .social-card .avatar-wrapper {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: #111118;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .social-card .avatar-wrapper img {
+            width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .social-card .avatar-wrapper img:hover {
+            transform: scale(1.02);
+        }
+        .social-card .name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+        .social-card .desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 14px;
+            font-style: italic;
+        }
+        .social-card .btn-open {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 12px 20px;
+            border-radius: 14px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .social-card .btn-open::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+        }
+        .social-card .btn-open:active::after {
+            width: 400px;
+            height: 400px;
+        }
+        .social-card .btn-open:active {
+            transform: scale(0.97);
+            background: rgba(255,255,255,0.08);
+        }
+        .social-card .btn-open:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .highlight-pulse {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(60, 80, 120, 0.05); }
+            50% { box-shadow: 0 0 40px rgba(60, 80, 120, 0.15); }
+        }
+
+        .glitch-text {
+            display: inline-block;
+            position: relative;
+        }
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .glitch-text:hover::before {
+            opacity: 0.3;
+            transform: translate(-2px, -1px);
+            color: #4a5f7a;
+            animation: glitchMove 0.3s ease;
+        }
+        .glitch-text:hover::after {
+            opacity: 0.2;
+            transform: translate(2px, 1px);
+            color: #8a9bb5;
+            animation: glitchMove 0.3s ease reverse;
+        }
+        @keyframes glitchMove {
+            0% { opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0; }
+        }
+
+        .info-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.3);
+            font-size: 22px;
+            font-weight: 300;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-decoration: none;
+            letter-spacing: 0;
+            line-height: 1;
+            animation: floatBtn 3.5s ease-in-out infinite;
+            user-select: none;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .info-btn:hover {
+            transform: scale(1.08);
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.6);
+            box-shadow: 0 4px 32px rgba(0,0,0,0.6);
+        }
+        .info-btn:active {
+            transform: scale(0.92);
+            background: rgba(255,255,255,0.02);
+        }
+        .info-btn.hidden {
+            display: none;
+        }
+        .info-btn.story-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes floatBtn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .info-content { text-align: center; }
+        .info-content .avatar-small {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 12px;
+            border: 2px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+        .info-content .avatar-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .info-content .info-name {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(270deg, #8a9bb5, #4a5f7a, #8a9bb5, #4a5f7a);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 8s ease-in-out infinite;
+            margin-bottom: 4px;
+        }
+        .info-content .info-quote {
+            font-size: 14px;
+            color: rgba(255,255,255,0.35);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .info-content .info-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            margin: 12px 0;
+        }
+        .info-content .info-offer {
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.4);
+            background: linear-gradient(270deg, #8a9bb5, #4a5f7a, #8a9bb5, #4a5f7a);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 12s ease-in-out infinite;
+            padding: 4px 0;
+        }
+        .info-content .info-offer a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            transition: border-color 0.3s ease;
+        }
+        .info-content .info-offer a:hover {
+            border-color: rgba(255,255,255,0.25);
+        }
+        .info-content .info-offer .hashtag {
+            color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.03);
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<button class="info-btn" id="infoBtn" onclick="showInfo()" title="Информация">i</button>
+
+<div class="card" id="mainMenu">
+    <div class="avatar">
+        <img src="https://i.postimg.cc/Qx4DTtv5/IMG-20260627-014129.jpg" alt="Temchik_Haver">
+    </div>
+    <h1 class="glitch-text" data-text="Temchik_Haver">Temchik_Haver</h1>
+    <div class="sub">Личный профиль</div>
+
+    <div class="divider"></div>
+
+    <div class="links">
+        <button class="btn btn-default" onclick="handleClick(this, 'forum')">Форумный Аккаунт</button>
+        <button class="btn btn-default" onclick="handleClick(this, 'vk')">VK</button>
+        <button class="btn btn-default" onclick="handleClick(this, 'tiktok')">TikTok</button>
+        <button class="btn btn-story" onclick="toggleStory(this)">Моя история</button>
+    </div>
+
+    <div id="storyWrapper" class="story-wrapper">
+        <div id="story" class="story-text">
+BLUE
+
+Мл.Модератор [3lvl]
+12.06.2026 — 16.06.2026
+
+Модератор [4lvl]
+16.06.2026 — 22.06.2026
+
+Ст. Модератор [5lvl]
+22.06.2026 — 28.06.2026
+
+Куратор Форума
+26.06.2026 — 01.07.2026 [ПСЖ]
+
+Мл. Администратор [6lvl]
+28.06.2026 — 01.07.2026 [ПСЖ]
+        </div>
+    </div>
+
+    <div class="footer">Telegram Mini App</div>
+</div>
+
+<div class="card social-page" id="page-forum">
+    <button class="back-btn" onclick="goBack(this)">← Назад</button>
+    <div class="social-card highlight-pulse">
+        <div class="avatar-wrapper">
+            <img src="https://i.postimg.cc/FsYZmF52/IMG-20260722-221549.jpg" alt="Forum">
+        </div>
+        <div class="name">Temchik Haver</div>
+        <div class="desc">«Если хочешь быть счастливым — будь им.»</div>
+        <button class="btn-open" onclick="openLink('https://forum.blessrussia.online/index.php?members=48813/')">Перейти в Форум →</button>
+    </div>
+</div>
+
+<div class="card social-page" id="page-vk">
+    <button class="back-btn" onclick="goBack(this)">← Назад</button>
+    <div class="social-card highlight-pulse">
+        <div class="avatar-wrapper">
+            <img src="https://i.postimg.cc/XJDCDFvs/IMG-20260722-223610.jpg" alt="VK">
+        </div>
+        <div class="name">Temchik Haver</div>
+        <div class="desc">«не доксер»</div>
+        <button class="btn-open" onclick="openLink('https://vk.ru/ianconno')">Перейти в VK →</button>
+    </div>
+</div>
+
+<div class="card social-page" id="page-tiktok">
+    <button class="back-btn" onclick="goBack(this)">← Назад</button>
+    <div class="social-card highlight-pulse">
+        <div class="avatar-wrapper">
+            <img src="https://i.postimg.cc/rpf0KW5y/IMG-20260722-222839.jpg" alt="TikTok">
+        </div>
+        <div class="name">да</div>
+        <div class="desc">Отсутствует.</div>
+        <button class="btn-open" onclick="openLink('https://www.tiktok.com/@temchikhaver')">Перейти в TikTok →</button>
+    </div>
+</div>
+
+<div class="card social-page" id="page-info">
+    <button class="back-btn" onclick="goBack(this)">← Назад</button>
+    <div class="social-card info-content highlight-pulse">
+        <div class="avatar-small">
+            <img src="https://i.postimg.cc/Qx4DTtv5/IMG-20260627-014129.jpg" alt="Temchik_Haver">
+        </div>
+        <div class="info-name">Temchik Haver</div>
+        <div class="info-quote">«Создатель Сайта»</div>
+        <div class="info-divider"></div>
+        <div class="info-offer">
+            Хочешь такой же сайт или бота?<br>
+            Пиши <a href="https://t.me/MrTemaBot" target="_blank">@MrTemaBot</a> с <span class="hashtag">#Заказ</span><br>
+            и мы всё обсудим.
+        </div>
+    </div>
+</div>
+
+<script>
+    function createStars() {
+        const container = document.getElementById('stars');
+        const count = 160;
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1.5;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 2.5 + 1.5) + 's');
+            star.style.animationDelay = (Math.random() * 3) + 's';
+            fragment.appendChild(star);
+        }
+        container.appendChild(fragment);
+    }
+    createStars();
+
+    if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+    }
+
+    let activeButton = null;
+    let timeoutId = null;
+
+    function handleClick(btn, type) {
+        if (activeButton && activeButton !== btn) {
+            activeButton.classList.remove('btn-active');
+            activeButton = null;
+        }
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+        }
+
+        btn.classList.add('btn-active');
+        activeButton = btn;
+
+        timeoutId = setTimeout(() => {
+            btn.classList.remove('btn-active');
+            if (activeButton === btn) {
+                activeButton = null;
+            }
+            timeoutId = null;
+        }, 500);
+
+        showSocial(type);
+    }
+
+    function showSocial(type) {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('infoBtn').classList.add('hidden');
+
+        const page = document.getElementById('page-' + type);
+        page.classList.remove('closing');
+        page.classList.add('active');
+        page.style.display = 'block';
+        page.style.animation = 'none';
+        requestAnimationFrame(() => {
+            page.style.animation = 'slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+    }
+
+    function goBack(btn) {
+        const page = btn.closest('.social-page');
+        page.classList.add('closing');
+        setTimeout(() => {
+            page.classList.remove('active', 'closing');
+            page.style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'block';
+            const infoBtn = document.getElementById('infoBtn');
+            infoBtn.classList.remove('hidden');
+            infoBtn.classList.remove('story-hidden');
+            infoBtn.style.animation = 'floatBtn 3.5s ease-in-out infinite';
+        }, 300);
+    }
+
+    function openLink(url) {
+        if (window.Telegram && Telegram.WebApp) {
+            Telegram.WebApp.openLink(url);
+        } else {
+            window.open(url, '_blank');
+        }
+    }
+
+    function toggleStory(btn) {
+        const wrapper = document.getElementById('storyWrapper');
+        const isOpen = wrapper.classList.contains('open');
+        const infoBtn = document.getElementById('infoBtn');
+
+        if (isOpen) {
+            wrapper.classList.remove('open');
+            btn.textContent = 'Моя история';
+            infoBtn.classList.remove('story-hidden');
+            infoBtn.style.animation = 'floatBtn 3.5s ease-in-out infinite';
+        } else {
+            if (activeButton) {
+                activeButton.classList.remove('btn-active');
+                activeButton = null;
+            }
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
+            wrapper.classList.add('open');
+            btn.textContent = 'Скрыть историю';
+            infoBtn.classList.add('story-hidden');
+            infoBtn.style.animation = 'none';
+        }
+    }
+
+    function showInfo() {
+        showSocial('info');
+    }
+</script>
+
+</body>
+</html>
